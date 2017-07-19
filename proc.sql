@@ -20,7 +20,7 @@ CREATE PROCEDURE LAMBDASHARP_proc(
 ) LANGUAGE SQL
 BEGIN
 CALL mysql.lambda_async(
-  'arn:aws:lambda:us-west-2:254924790709:function:lambdasharp-indexer',
+  'LAMBDA_INDEXER_ARN',
   CONCAT(
     '{"name": "', name, '",',
      '"op": "', op, '",',
