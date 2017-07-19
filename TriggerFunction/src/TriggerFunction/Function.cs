@@ -14,7 +14,12 @@ using Newtonsoft.Json;
 
 namespace TriggerFunction {
 
-    //--- Types ---
+    public enum Operation {
+        UPDATE,
+        INSERT,
+        DELETE
+    }
+
     public class Hero {
 
         public class GeoLocation {
@@ -25,6 +30,9 @@ namespace TriggerFunction {
             [JsonProperty("lat")]
             public double Latitude { get; set; }
         }
+
+        [JsonProperty("op")]
+        public Operation Op;
 
         [JsonProperty("id")]
         public int Id { get; set; }
@@ -68,22 +76,31 @@ namespace TriggerFunction {
         public override string ToString() {
             return $"{Name} | {UrlSlug} | {Identity} | {Alignment} | {EyeColor} | {HairColor} | {Sex} | {Gsm} | {Appearances} | {FirstAppearance} | {Year} | {Location.Longitude} | {Location.Latitude}";
         }
+
     }
 
     public class Function {
 
         //--- Constants ---
-        private const string INDEX_NAME = "heroes";
+        private const string INDEX_NAME = "heroes_two";
         private const string TYPE_NAME = "hero";
 
         //--- Class Fields ---
-        private static readonly Uri _esDomain = new Uri("https://TODO");
+        private static readonly Uri _esDomain = new Uri("https://ESDOMAIN");
         
         //--- Methods ---
         public void FunctionHandler(Hero hero, ILambdaContext context) {
-            LambdaLogger.Log($"received hero: {hero.ToString()}");
-            
-            //TODO: index to elastic search
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(_esDomain, $"/{INDEX_NAME}/{TYPE_NAME}/{hero.Id}");
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            if(hero.Op == Operation.DELETE) {
+                var req = new HttpRequestMessage(HttpMethod.Delete, httpClient.BaseAddress);
+                httpClient.SendAsync(req).Result.EnsureSuccessStatusCode();
+            } else {
+                var req = new HttpRequestMessage(HttpMethod.Put, httpClient.BaseAddress);
+                req.Content = new StringContent(JsonConvert.SerializeObject(hero, Formatting.None), Encoding.UTF8, "application/json");
+                httpClient.SendAsync(req).Result.EnsureSuccessStatusCode();
+            }
         }
     }
 }
