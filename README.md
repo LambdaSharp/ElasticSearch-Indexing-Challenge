@@ -110,10 +110,10 @@ Verify that your database now has some data:
 SELECT * FROM heroes
 ```
 
-## Level 1
+## Level 1 (Hawkeye)
 Set up a [MySQL trigger](http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Aurora.Lambda.html) to invoke our lambda function when a new record is inserted. Give it all the available data about the hero so that we can index it later.
 
-## Level 2
+## Level 2 (Martian Manhunter)
 1. Create an index in ElasticSearch called `heroes` with the following schema:
 ```json
 PUT heroes
@@ -147,10 +147,10 @@ PUT heroes
 
 2. Extend the lambda function to index the heroes into our new index.
 
-## Level 3
+## Level 3 (Worldbreaker Hulk)
 Keep the index synchronized when updates or deletions happen in MySQL.
 
-## Boss Level
+## Boss Level (Dr. Manhattan)
 Using [Kibana](https://www.elastic.co/products/kibana) plot the location of all the super heroes in the world. Where are they located? (Hint: it's ComicCon)
 
 ## Acknowledgements
