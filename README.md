@@ -1,4 +1,4 @@
-# λ# Indexing in the Cloud - July 2017 Team Hackathon Challenge (Theme: ComicCon)
+# λ# Indexing in the Cloud (Theme: ComicCon)
 Traditional relational databases are still very prevalent today. Often however, we need to search or slice and dice the data many different ways and RDBMS's are not great at that. As many do, will be using [ElasticSearch](https://aws.amazon.com/elasticsearch-service/) to provide this functionality. Today we will explore how AWS Lambda can help us index our relational data into ElasticSearch with minimal effort and cost. We will be using [Amazon Aurora](https://aws.amazon.com/rds/aurora/) (MySQL), [Amazon Lambda](https://aws.amazon.com/lambda/), and [ElasticSearch](https://aws.amazon.com/elasticsearch-service/). 
 
 We will setup database triggers to fire a lambda function when an INSERT, UPDATE or DELETE occurs in Aurora. The lambda function will then be responsible for updating the ElasticSearch index.
